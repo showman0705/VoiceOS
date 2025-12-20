@@ -11,13 +11,7 @@ def main():
         print('transcribing...')
         text = transcribe(model, audio)
         print('>>>', text if text else 'None')
-        execute(text.replace(' ', '')
-                    .replace('!', '')
-                    .replace('?', '')
-                    .replace('.', '')
-                    .replace(',', ''))
+        execute(text.replace(' ', ''))
 
 if __name__ == "__main__":
     main()
-
-

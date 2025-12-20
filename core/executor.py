@@ -66,7 +66,7 @@ def execute(text):
 
     if action == 'search':
         a = urllib.parse.quote(program)
-        url = f"https://www.google.com/search?q={program}"
+        url = f"https://www.google.com/search?q={a}"
         webbrowser.open(url)
 
 
