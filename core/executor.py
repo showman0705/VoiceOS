@@ -3,6 +3,9 @@ import os
 import psutil
 import webbrowser
 import urllib.parse
+import time
+import pyautogui
+import pyperclip
 
 programs = {"구글" : r"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Google Chrome.lnk",
             "카카오톡" : r"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\카카오톡.lnk",
@@ -39,6 +42,12 @@ def execute(text):
         action = "close"
     elif "검색" in text:
         action = "search"
+    elif "몇시야" in text:
+        action = "time"
+    elif ("에게" in text) and (("라고보내" in text) or ("라고보네" in text)):
+        action = "kkt"
+    elif "종료" in text:
+        action = "shutdown"
     else:
         return
 
@@ -47,7 +56,10 @@ def execute(text):
                     .replace('혀','')
                     .replace('닫아','')
                     .replace('다다','')
-                    .replace('검색',''))
+                    .replace('검색','')
+                    .replace('에게',' ')
+                    .replace('라고보내','')
+                    .replace('라고보네',''))
 
     if action == 'run':
         for ko, file in programs.items():
@@ -68,5 +80,34 @@ def execute(text):
         a = urllib.parse.quote(program)
         url = f"https://www.google.com/search?q={a}"
         webbrowser.open(url)
+
+    if action == 'kkt':
+        name, message = program.split(' ', 1)
+        os.startfile(r"C:\ProgramData\Microsoft\Windows\Start Menu\Programs\카카오톡.lnk")
+        time.sleep(7)
+
+        pyautogui.hotkey("ctrl", "f")
+        time.sleep(1)
+
+        pyperclip.copy(name)
+        pyautogui.hotkey("ctrl", "v")
+        time.sleep(3)
+        pyautogui.hotkey('enter')
+        time.sleep(2)
+
+        pyperclip.copy(message)
+        pyautogui.hotkey("ctrl", "v")
+        pyautogui.press("enter")
+        time.sleep(0.1)
+
+        pyautogui.hotkey("alt", "tab")
+        pyautogui.press("esc")
+
+    if action == 'shutdown':
+        os.system("shutdown /s /t 5")
+
+
+
+
 
 
